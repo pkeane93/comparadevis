@@ -24,7 +24,7 @@ class ComparisonsController < ApplicationController
   def show
     @comparison = fetch(params[:id])
 
-    return redirect_to(root_path, alert: "That comparison has expired.") if @comparison.nil?
+    redirect_to(root_path, alert: "That comparison has expired.") if @comparison.nil?
   end
 
   private
