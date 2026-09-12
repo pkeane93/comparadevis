@@ -32,3 +32,6 @@
 
 # Design mockups - kept local
 /high_fidelity/
+
+/app/assets/builds/*
+!/app/assets/builds/.keep

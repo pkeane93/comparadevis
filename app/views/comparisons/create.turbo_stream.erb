@@ -1,0 +1,4 @@
+<%# Drops the panel under the upload zones without leaving the page. %>
+<%= turbo_stream.update "comparison" do %>
+  <%= render "panel", comparison: @comparison, id: @id %>
+<% end %>

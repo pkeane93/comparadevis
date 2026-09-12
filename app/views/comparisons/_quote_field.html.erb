@@ -1,0 +1,16 @@
+<label data-uploads-target="zone"
+       class="flex max-w-sm flex-1 basis-64 cursor-pointer flex-col items-center gap-2 rounded-2xl border-2 border-dashed border-slate-700 bg-slate-900/60 px-6 py-10 text-center transition hover:border-violet-500 focus-within:border-violet-500">
+  <input type="file"
+         name="quotes[]"
+         accept="application/pdf"
+         class="sr-only"
+         data-action="uploads#pick">
+
+  <svg class="h-11 w-11 text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+    <path d="M12 16V7m0 0L8.5 10.5M12 7l3.5 3.5" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M4 15a4.5 4.5 0 0 1 1.6-8.7A5.5 5.5 0 0 1 16.4 7 4 4 0 0 1 20 15" stroke-linecap="round" stroke-linejoin="round" />
+  </svg>
+
+  <span class="text-xl" data-uploads-target="title">Quote <%= index %></span>
+  <span class="text-sm break-all text-slate-500" data-uploads-target="hint">PDF — click or drop</span>
+</label>
