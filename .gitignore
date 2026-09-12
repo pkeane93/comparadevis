@@ -29,3 +29,6 @@
 
 # Private project spec - never commit
 /spec.md
+
+# Design mockups - kept local
+/high_fidelity/
