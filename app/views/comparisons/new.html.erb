@@ -20,6 +20,14 @@
       <%= render "quote_field", index: 2 %>
     </div>
 
+    <div class="mx-auto mt-7 max-w-xl">
+      <%= form.label :description, "What is the job? (optional)", class: "block text-sm text-slate-400" %>
+      <%= form.text_field :description,
+            value: params[:description],
+            placeholder: "Replacing the roof on a 1970s apartment block",
+            class: "mt-2 w-full rounded-xl border border-slate-700 bg-slate-900/60 px-4 py-2.5 placeholder:text-slate-600 focus:border-violet-500 focus:outline-none" %>
+    </div>
+
     <div class="mt-7 flex items-center justify-center gap-4">
       <button type="button"
               data-uploads-target="add"
