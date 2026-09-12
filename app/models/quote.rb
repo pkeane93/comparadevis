@@ -27,4 +27,9 @@ class Quote
   def size
     bytes.bytesize
   end
+
+  # What to call this quote before the model has told us the company.
+  def label
+    company.presence || filename
+  end
 end

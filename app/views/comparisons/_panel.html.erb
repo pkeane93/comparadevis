@@ -21,21 +21,35 @@
 
     <% else %>
       <div class="mt-6 overflow-x-auto">
-        <table class="w-full border-collapse text-left">
+        <%# Tailwind cannot size a class by quote count, and without a floor the
+            browser squeezes six columns instead of letting the box scroll. %>
+        <table class="w-full border-collapse text-left"
+               style="min-width: <%= (comparison.quotes.size + 1) * 150 %>px">
           <thead>
             <tr class="border-b border-slate-700 text-slate-400">
               <th class="py-2 pr-4 font-normal"></th>
               <% comparison.quotes.each do |quote| %>
-                <th class="py-2 pr-4 font-normal"><%= quote.company.presence || quote.filename %></th>
+                <th class="py-2 pr-4 font-normal"><%= quote.label %></th>
               <% end %>
             </tr>
           </thead>
           <tbody>
             <% comparison.rows.each do |row| %>
               <tr class="border-b border-slate-800">
-                <td class="py-2 pr-4 text-slate-400"><%= row[:line_item] %></td>
-                <% row[:values].each do |value| %>
-                  <td class="py-2 pr-4"><%= value %></td>
+                <td class="py-2 pr-4 text-slate-400">
+                  <%= row[:line_item] %>
+                  <% if row[:note].present? %>
+                    <span class="block text-xs text-slate-600"><%= row[:note] %></span>
+                  <% end %>
+                </td>
+                <% row[:cells].each do |cell| %>
+                  <td class="py-2 pr-4">
+                    <% if cell[:verified] %>
+                      <%= cell[:value] %>
+                    <% else %>
+                      <span class="text-amber-400/70 italic">needs checking</span>
+                    <% end %>
+                  </td>
                 <% end %>
               </tr>
             <% end %>
