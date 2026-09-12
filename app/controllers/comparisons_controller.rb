@@ -1,7 +1,11 @@
 class ComparisonsController < ApplicationController
   MIN_QUOTES = 2
   MAX_QUOTES = 5
-  MAX_UPLOAD_SIZE = 10.megabytes
+
+  # The API accepts 32 MB per request and base64 inflates by about a third,
+  # so these are set well under it rather than at it.
+  MAX_QUOTE_SIZE = 5.megabytes
+  MAX_TOTAL_SIZE = 20.megabytes
 
   # `create` re-renders the form on a validation error, so it needs this too.
   before_action :set_max_quotes, only: %i[new create]
@@ -20,7 +24,9 @@ class ComparisonsController < ApplicationController
     end
 
     @comparison = Comparison.new(quotes: @quotes)
-    @id = store(@comparison)
+    @id = Comparison.store(@comparison)
+
+    ComparisonJob.perform_later(@id, params[:description].to_s)
 
     respond_to do |format|
       format.turbo_stream
@@ -31,7 +37,7 @@ class ComparisonsController < ApplicationController
   # The comparison panel, polled by the page while the job runs.
   def show
     @id = params[:id]
-    @comparison = fetch(@id) || expired_comparison
+    @comparison = Comparison.find(@id) || expired_comparison
   end
 
   private
@@ -55,24 +61,10 @@ class ComparisonsController < ApplicationController
         "You can compare up to #{MAX_QUOTES} quotes at a time."
       elsif !quotes.all?(&:pdf?)
         "Every file must be a PDF."
-      elsif quotes.any? { |quote| quote.size > MAX_UPLOAD_SIZE }
-        "Each file must be under #{MAX_UPLOAD_SIZE / 1.megabyte} MB."
+      elsif quotes.any? { |quote| quote.size > MAX_QUOTE_SIZE }
+        "Each file must be under #{MAX_QUOTE_SIZE / 1.megabyte} MB."
+      elsif quotes.sum(&:size) > MAX_TOTAL_SIZE
+        "The quotes come to more than #{MAX_TOTAL_SIZE / 1.megabyte} MB in total."
       end
-    end
-
-    # Comparisons live in the process cache, not a database. They expire, and
-    # they are not shared between containers.
-    def store(comparison)
-      SecureRandom.uuid.tap do |id|
-        Rails.cache.write(cache_key(id), comparison, expires_in: 1.hour)
-      end
-    end
-
-    def fetch(id)
-      Rails.cache.read(cache_key(id))
-    end
-
-    def cache_key(id)
-      "comparison/#{id}"
     end
 end

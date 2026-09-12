@@ -63,3 +63,7 @@ gem "tailwindcss-rails", "~> 4.6"
 # activesupport 8.1 still passes (active_support/json/decoding.rb). With 3.x
 # every JSON decode raises ArgumentError - including session cookies.
 gem "json", "~> 2.21"
+
+gem "anthropic", "~> 1.70"
+
+gem "dotenv-rails", "~> 3.2", groups: [ :development, :test ]
