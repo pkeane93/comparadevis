@@ -3,6 +3,9 @@ class ComparisonsController < ApplicationController
   MAX_QUOTES = 5
   MAX_UPLOAD_SIZE = 10.megabytes
 
+  # `create` re-renders the form on a validation error, so it needs this too.
+  before_action :set_max_quotes, only: %i[new create]
+
   # The one page: uploads on top, comparison underneath once it exists.
   def new
   end
@@ -34,6 +37,10 @@ class ComparisonsController < ApplicationController
   end
 
   private
+    def set_max_quotes
+      @max_quotes = MAX_QUOTES
+    end
+
     def upload_error(quotes)
       if quotes.size < MIN_QUOTES
         "Please upload at least #{MIN_QUOTES} quotes."

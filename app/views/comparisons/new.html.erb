@@ -1,0 +1,38 @@
+<div class="mx-auto max-w-5xl px-4 pt-6 pb-16">
+  <header class="flex items-center rounded-2xl border border-slate-700 bg-gradient-to-r from-violet-950 to-cyan-950 px-6 py-4">
+    <span class="flex items-center gap-3 text-xl font-semibold">
+      <span class="h-5 w-5 rotate-45 rounded-md border-2 border-cyan-400" aria-hidden="true"></span>
+      Comparadevis
+    </span>
+  </header>
+
+  <%= form_with url: comparisons_path, multipart: true, class: "mt-12",
+                data: { controller: "uploads", uploads_max_value: @max_quotes } do |form| %>
+
+    <% if @error.present? %>
+      <p role="alert" class="mx-auto mb-5 max-w-xl rounded-xl border border-rose-900 bg-rose-950/60 px-4 py-3 text-center">
+        <%= @error %>
+      </p>
+    <% end %>
+
+    <div class="flex flex-wrap justify-center gap-6" data-uploads-target="zones">
+      <%= render "quote_field", index: 1 %>
+      <%= render "quote_field", index: 2 %>
+    </div>
+
+    <div class="mt-7 flex items-center justify-center gap-4">
+      <button type="button"
+              data-uploads-target="add"
+              data-action="uploads#add"
+              class="rounded-full border border-dashed border-slate-700 px-5 py-2.5 text-slate-400 transition hover:border-violet-500 hover:text-slate-100">
+        + Add another quote
+      </button>
+
+      <%= form.submit "Compare",
+            class: "cursor-pointer rounded-full bg-gradient-to-r from-violet-500 to-cyan-400 px-6 py-2.5 font-semibold text-slate-950" %>
+    </div>
+  <% end %>
+
+  <%# The comparison panel is appended here by create.turbo_stream.erb %>
+  <div id="comparison"></div>
+</div>
