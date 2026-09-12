@@ -9,6 +9,8 @@ Rails.application.routes.draw do
   # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
   # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
 
-  # Defines the root path route ("/")
-  # root "posts#index"
+  # Upload form on the landing page, result on its own URL so a reload
+  # during the 30-60s wait resumes instead of starting over.
+  root "comparisons#new"
+  resources :comparisons, only: [ :create, :show ]
 end
