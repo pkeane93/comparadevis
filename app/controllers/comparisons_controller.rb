@@ -31,14 +31,21 @@ class ComparisonsController < ApplicationController
   # The comparison panel, polled by the page while the job runs.
   def show
     @id = params[:id]
-    @comparison = fetch(@id)
-
-    render :expired, status: :not_found if @comparison.nil?
+    @comparison = fetch(@id) || expired_comparison
   end
 
   private
     def set_max_quotes
       @max_quotes = MAX_QUOTES
+    end
+
+    # Comparisons are held in memory and expire, so a polling frame can outlive
+    # the result it is waiting for. Reported as a failure, which stops polling.
+    def expired_comparison
+      Comparison.new.tap do |comparison|
+        comparison.error = "This comparison has expired. Upload the quotes again to run a new one."
+        comparison.status = :failed
+      end
     end
 
     def upload_error(quotes)
