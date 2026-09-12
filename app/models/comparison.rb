@@ -34,17 +34,32 @@ class Comparison
   end
 
   # One row of the table: a line item compared across the quotes.
-  # `values` is one entry per quote, in the same order as `quotes`.
+  # `values` is one entry per quote, in the same order as `quotes`. Each
+  # becomes a cell carrying whether it holds a real figure, so the view can
+  # mark the rest "needs checking" rather than printing a bare "?".
   def add_row(line_item:, values:, note: nil)
-    rows << { line_item: line_item, values: values, note: note }
+    # A row must have one cell per quote. If the model returns too few, the
+    # missing ones would slide under the wrong column, so pad them out; if it
+    # returns too many, drop the extras.
+    cells = Array(values).first(quotes.size).map { |value| cell_for(value) }
+    cells << cell_for(nil) while cells.size < quotes.size
+
+    rows << { line_item: line_item.to_s.strip, cells: cells, note: note.presence }
   end
 
   def add_discrepancy(description:, severity: :medium)
-    unless SEVERITIES.include?(severity.to_sym)
-      raise ArgumentError, "unknown severity #{severity.inspect}"
-    end
+    candidate = severity.to_s.strip.downcase.to_sym
+    candidate = :medium unless SEVERITIES.include?(candidate)
 
-    discrepancies << { description: description, severity: severity.to_sym }
+    discrepancies << { description: description.to_s.strip, severity: candidate }
+  end
+
+  # Placeholders the model reaches for when a quote does not state something.
+  PLACEHOLDERS = [ "", "?", "-", "--", "n/a", "na", "none", "not stated", "unknown" ].freeze
+
+  def cell_for(value)
+    text = value.to_s.strip
+    { value: text, verified: text.present? && !PLACEHOLDERS.include?(text.downcase) }
   end
 
   def status=(value)
