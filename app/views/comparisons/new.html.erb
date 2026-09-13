@@ -6,6 +6,36 @@
     </span>
   </header>
 
+  <section class="mx-auto mt-10 max-w-5xl text-center">
+    <div class="mx-auto max-w-3xl">
+      <p class="text-lg text-slate-200">
+        Upload contractor quotes for the same job and get a side-by-side comparison,
+        the discrepancies between them, and a reasoned recommendation.
+      </p>
+      <p class="mt-2 text-sm text-slate-500">
+        For syndics and conseils de copropriété.
+      </p>
+    </div>
+
+    <div class="mt-8 grid grid-cols-3 gap-6">
+      <div class="flex flex-col items-center rounded-2xl border border-slate-700 bg-slate-900/60 p-5 text-center">
+        <%= image_tag "step-1.png", class: "h-32 w-32 rounded-xl object-cover bg-slate-800", alt: "Uploading quote PDFs" %>
+        <p class="mt-4 font-semibold">1. Upload 2-5 PDFs</p>
+        <p class="mt-1 text-sm text-slate-400">Quotes for the same job, in French.</p>
+      </div>
+      <div class="flex flex-col items-center rounded-2xl border border-slate-700 bg-slate-900/60 p-5 text-center">
+        <%= image_tag "step-2.png", class: "h-32 w-32 rounded-xl object-cover bg-slate-800", alt: "The agent reading the quotes" %>
+        <p class="mt-4 font-semibold">2. The agent reads them</p>
+        <p class="mt-1 text-sm text-slate-400">Takes 30 to 60 seconds.</p>
+      </div>
+      <div class="flex flex-col items-center rounded-2xl border border-slate-700 bg-slate-900/60 p-5 text-center">
+        <%= image_tag "step-3.png", class: "h-32 w-32 rounded-xl object-cover bg-slate-800", alt: "The finished comparison" %>
+        <p class="mt-4 font-semibold">3. Comparison appears below</p>
+        <p class="mt-1 text-sm text-slate-400">Side-by-side, with discrepancies and a recommendation.</p>
+      </div>
+    </div>
+  </section>
+
   <%= form_with url: comparisons_path, multipart: true, class: "mt-12",
                 data: { controller: "uploads", uploads_max_value: @max_quotes } do |form| %>
 
