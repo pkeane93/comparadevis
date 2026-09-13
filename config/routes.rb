@@ -12,6 +12,11 @@ Rails.application.routes.draw do
   # Everything happens on the landing page: uploads on top, comparison
   # underneath. `show` is not a page — it serves the comparison panel that
   # the page polls while the job runs.
-  root "comparisons#new"
-  resources :comparisons, only: [ :create, :show ]
+  #
+  # The locale is an optional URL segment (/, /fr, /nl all work) so links are
+  # shareable per language instead of depending on a session.
+  scope "(:locale)", locale: /en|fr|nl/ do
+    root "comparisons#new"
+    resources :comparisons, only: [ :create, :show ]
+  end
 end

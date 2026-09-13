@@ -1,0 +1,55 @@
+nl:
+  comparisons:
+    explainer:
+      intro: "Upload offertes van aannemers voor dezelfde opdracht en krijg een vergelijking naast elkaar, de verschillen ertussen, en een onderbouwd advies."
+      audience: "Voor syndici en verenigingen van mede-eigenaars."
+    steps:
+      upload:
+        title: "1. Upload 2-5 PDF's"
+        subtitle: "Offertes voor dezelfde opdracht, in het Frans."
+      agent:
+        title: "2. De AI-agent leest ze"
+        subtitle: "Duurt 30 tot 60 seconden."
+      result:
+        title: "3. De vergelijking verschijnt hieronder"
+        subtitle: "Naast elkaar, met verschillen en een advies."
+    description_label: "Wat is de opdracht? (optioneel)"
+    description_placeholder: "Vervanging van het dak van een appartementsgebouw uit de jaren 70"
+    add_another_quote: "Nog een offerte toevoegen"
+    compare: "Vergelijk"
+    reset: "Reset"
+    attempts_left:
+      one: "%{count} poging over vandaag"
+      other: "%{count} pogingen over vandaag"
+    footer:
+      built_by: "Gemaakt door"
+    quote_field:
+      quote_title: "Offerte %{index}"
+      hint: "PDF — klik of sleep"
+      remove: "Deze offerte verwijderen"
+    panel:
+      heading: "Vergelijking"
+      download: "Downloaden"
+      download_tooltip: "PDF-download binnenkort beschikbaar"
+      polling: "De offertes worden gelezen — dit duurt 30 tot 60 seconden."
+      failed_generic: "Er ging iets mis bij het vergelijken van deze offertes."
+      needs_checking: "controleren"
+      discrepancies: "Verschillen"
+      recommendation: "Advies"
+    errors:
+      min_quotes: "Upload minstens %{count} offertes."
+      max_quotes: "U kunt tot %{count} offertes tegelijk vergelijken."
+      pdf_only: "Elk bestand moet een PDF zijn."
+      quote_too_large: "Elk bestand moet kleiner zijn dan %{size} MB."
+      total_too_large: "De offertes zijn samen groter dan %{size} MB."
+      rate_limited: "U heeft de limiet van %{count} vergelijkingen per dag vanaf deze verbinding bereikt. Probeer morgen opnieuw."
+      expired: "Deze vergelijking is verlopen. Upload de offertes opnieuw om een nieuwe te starten."
+    job_errors:
+      missing_api_key: "De server beschikt niet over een geldige Anthropic API-sleutel."
+      too_large: "Deze offertes zijn te groot om te vergelijken. Probeer kleinere PDF's."
+      too_many_requests: "Te veel vergelijkingen tegelijk. Probeer het straks opnieuw."
+      service_unavailable: "De vergelijkingsdienst is niet beschikbaar. Probeer het later opnieuw."
+      generic_rejected: "De vergelijkingsdienst heeft het verzoek geweigerd."
+      connection_error: "Kan de vergelijkingsdienst niet bereiken. Probeer opnieuw."
+      generic_failure: "Er ging iets mis bij het vergelijken van deze offertes."
+      incomplete_recommendation: "Advies onvolledig: de offertes verschillen op punten waarmee de analyse geen rekening hield. Bekijk de verschillen hieronder voordat u kiest."

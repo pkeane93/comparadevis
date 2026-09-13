@@ -9,7 +9,7 @@ class ComparisonsController < ApplicationController
   MAX_TOTAL_SIZE = 20.megabytes
 
   # `create` re-renders the form on a validation error, so it needs this too.
-  before_action :set_max_quotes, only: %i[new create]
+  before_action :set_max_quotes, :set_min_quotes, only: %i[new create]
 
   # Every comparison run costs Anthropic credits. Capped per IP instead of
   # gated behind a password, so anyone can try the demo — just not spam it.
@@ -33,7 +33,7 @@ class ComparisonsController < ApplicationController
     @comparison = Comparison.new(quotes: @quotes)
     @id = Comparison.store(@comparison)
 
-    ComparisonJob.perform_later(@id, params[:description].to_s)
+    ComparisonJob.perform_later(@id, params[:description].to_s, I18n.locale.to_s)
 
     respond_to do |format|
       format.turbo_stream
@@ -52,8 +52,12 @@ class ComparisonsController < ApplicationController
       @max_quotes = MAX_QUOTES
     end
 
+    def set_min_quotes
+      @min_quotes = MIN_QUOTES
+    end
+
     def rate_limited
-      @error = "You've reached the limit of #{MAX_COMPARISONS_PER_DAY} comparisons per day from this connection. Try again tomorrow."
+      @error = t("comparisons.errors.rate_limited", count: MAX_COMPARISONS_PER_DAY)
       # A before_action that renders halts the chain, so the later
       # set_attempts_left never runs on this path — compute it directly.
       set_attempts_left
@@ -72,22 +76,22 @@ class ComparisonsController < ApplicationController
     # the result it is waiting for. Reported as a failure, which stops polling.
     def expired_comparison
       Comparison.new.tap do |comparison|
-        comparison.error = "This comparison has expired. Upload the quotes again to run a new one."
+        comparison.error = t("comparisons.errors.expired")
         comparison.status = :failed
       end
     end
 
     def upload_error(quotes)
       if quotes.size < MIN_QUOTES
-        "Please upload at least #{MIN_QUOTES} quotes."
+        t("comparisons.errors.min_quotes", count: MIN_QUOTES)
       elsif quotes.size > MAX_QUOTES
-        "You can compare up to #{MAX_QUOTES} quotes at a time."
+        t("comparisons.errors.max_quotes", count: MAX_QUOTES)
       elsif !quotes.all?(&:pdf?)
-        "Every file must be a PDF."
+        t("comparisons.errors.pdf_only")
       elsif quotes.any? { |quote| quote.size > MAX_QUOTE_SIZE }
-        "Each file must be under #{MAX_QUOTE_SIZE / 1.megabyte} MB."
+        t("comparisons.errors.quote_too_large", size: MAX_QUOTE_SIZE / 1.megabyte)
       elsif quotes.sum(&:size) > MAX_TOTAL_SIZE
-        "The quotes come to more than #{MAX_TOTAL_SIZE / 1.megabyte} MB in total."
+        t("comparisons.errors.total_too_large", size: MAX_TOTAL_SIZE / 1.megabyte)
       end
     end
 end
