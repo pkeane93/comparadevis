@@ -1,6 +1,7 @@
 class ComparisonsController < ApplicationController
   MIN_QUOTES = 2
   MAX_QUOTES = 5
+  MAX_COMPARISONS_PER_DAY = 3
 
   # The API accepts 32 MB per request and base64 inflates by about a third,
   # so these are set well under it rather than at it.
@@ -9,6 +10,12 @@ class ComparisonsController < ApplicationController
 
   # `create` re-renders the form on a validation error, so it needs this too.
   before_action :set_max_quotes, only: %i[new create]
+
+  # Every comparison run costs Anthropic credits. Capped per IP instead of
+  # gated behind a password, so anyone can try the demo — just not spam it.
+  rate_limit to: MAX_COMPARISONS_PER_DAY, within: 1.day, only: :create, with: :rate_limited
+
+  before_action :set_attempts_left, only: %i[new create]
 
   # The one page: uploads on top, comparison underneath once it exists.
   def new
@@ -43,6 +50,22 @@ class ComparisonsController < ApplicationController
   private
     def set_max_quotes
       @max_quotes = MAX_QUOTES
+    end
+
+    def rate_limited
+      @error = "You've reached the limit of #{MAX_COMPARISONS_PER_DAY} comparisons per day from this connection. Try again tomorrow."
+      # A before_action that renders halts the chain, so the later
+      # set_attempts_left never runs on this path — compute it directly.
+      set_attempts_left
+      render :new, status: :too_many_requests
+    end
+
+    # Rails' rate_limit macro keeps no public reader for the current count, so
+    # this mirrors its own cache key (scope: controller_path, name: nil,
+    # by: request.remote_ip) to read it back for display.
+    def set_attempts_left
+      used = Rails.cache.read([ "rate-limit", controller_path, request.remote_ip ].join(":")) || 0
+      @attempts_left = [ MAX_COMPARISONS_PER_DAY - used, 0 ].max
     end
 
     # Comparisons are held in memory and expire, so a polling frame can outlive
