@@ -47,6 +47,18 @@ class ComparisonsController < ApplicationController
     @comparison = Comparison.find(@id) || expired_comparison
   end
 
+  # The PDF export offered from the finished panel. 404s rather than erroring
+  # if the comparison expired from the cache or never finished.
+  def pdf
+    comparison = Comparison.find(params[:id])
+    return head :not_found unless comparison&.done?
+
+    send_data ComparisonPdf.render(comparison),
+              filename: "comparadevis-#{params[:id]}.pdf",
+              type: "application/pdf",
+              disposition: "attachment"
+  end
+
   private
     def set_max_quotes
       @max_quotes = MAX_QUOTES

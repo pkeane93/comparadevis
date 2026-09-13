@@ -67,3 +67,8 @@ gem "json", "~> 2.21"
 gem "anthropic", "~> 1.70"
 
 gem "dotenv-rails", "~> 3.2", groups: [ :development, :test ]
+
+# PDF export for the comparison panel [https://github.com/prawnpdf/prawn]
+gem "prawn", "~> 2.5"
+# Unmaintained since 2017, but the least-bad way to draw Prawn tables [https://github.com/prawnpdf/prawn-table]
+gem "prawn-table", "~> 0.2", require: "prawn/table"
