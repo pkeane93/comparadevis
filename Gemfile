@@ -62,7 +62,7 @@ gem "tailwindcss-rails", "~> 4.6"
 # json 3.x dropped the second positional argument to JSON.parse, which
 # activesupport 8.1 still passes (active_support/json/decoding.rb). With 3.x
 # every JSON decode raises ArgumentError - including session cookies.
-gem "json", "~> 2.21"
+gem "json", "~> 3.0"
 
 gem "anthropic", "~> 1.70"
 
