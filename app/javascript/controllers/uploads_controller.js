@@ -6,12 +6,35 @@ const EMPTY = ["border-dashed", "border-slate-700"]
 // Adds and removes upload zones between a minimum and a maximum, and shows
 // the chosen filename in place of the hint once a file is picked.
 export default class extends Controller {
-  static targets = ["zones", "zone", "add", "remove", "title", "hint"]
+  static targets = ["zones", "zone", "add", "remove", "title", "hint", "form", "panel", "submit", "reset"]
   static values = { max: Number, min: Number }
 
   connect() {
     this.syncAddCard()
     this.syncRemoveButtons()
+  }
+
+  // Swaps Compare for Reset the moment a comparison is submitted — Turbo
+  // handles the actual request, this just reacts to the same submit event.
+  onSubmit() {
+    this.submitTarget.hidden = true
+    this.resetTarget.hidden = false
+  }
+
+  // Clears the uploads and the comparison panel without a page reload.
+  reset(event) {
+    event.preventDefault()
+
+    this.formTarget.reset()
+    this.zoneTargets.slice(this.minValue).forEach((zone) => zone.remove())
+    this.zoneTargets.forEach((zone) => this.markEmpty(zone))
+    this.renumber()
+    this.syncAddCard()
+    this.syncRemoveButtons()
+
+    this.panelTarget.innerHTML = ""
+    this.submitTarget.hidden = false
+    this.resetTarget.hidden = true
   }
 
   add() {

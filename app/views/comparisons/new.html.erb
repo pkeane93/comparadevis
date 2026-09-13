@@ -1,4 +1,7 @@
-<div class="mx-auto max-w-5xl px-4 pt-6 pb-16">
+<div class="mx-auto max-w-5xl px-4 pt-6 pb-16"
+     data-controller="uploads"
+     data-uploads-max-value="<%= @max_quotes %>"
+     data-uploads-min-value="<%= @min_quotes %>">
   <header class="flex items-center rounded-2xl border border-slate-700 bg-gradient-to-r from-violet-950 to-cyan-950 px-6 py-4">
     <span class="flex items-center gap-3 text-xl font-semibold">
       <span class="h-5 w-5 rotate-45 rounded-md border-2 border-cyan-400" aria-hidden="true"></span>
@@ -37,7 +40,7 @@
   </section>
 
   <%= form_with url: comparisons_path, multipart: true, class: "mt-12",
-                data: { controller: "uploads", uploads_max_value: @max_quotes, uploads_min_value: @min_quotes } do |form| %>
+                data: { uploads_target: "form", action: "submit->uploads#onSubmit" } do |form| %>
 
     <% if @error.present? %>
       <p role="alert" class="mx-auto mb-5 max-w-xl rounded-xl border border-rose-900 bg-rose-950/60 px-4 py-3 text-center">
@@ -70,7 +73,16 @@
 
     <div class="mt-7 flex items-center justify-center gap-4">
       <%= form.submit "Compare",
+            data: { uploads_target: "submit" },
             class: "cursor-pointer rounded-full bg-gradient-to-r from-violet-500 to-cyan-400 px-6 py-2.5 font-semibold text-slate-950" %>
+
+      <button type="button"
+              hidden
+              data-uploads-target="reset"
+              data-action="uploads#reset"
+              class="cursor-pointer rounded-full border border-slate-700 px-6 py-2.5 font-semibold text-slate-300 transition hover:border-violet-500 hover:text-slate-100">
+        Reset
+      </button>
     </div>
 
     <p class="mt-3 text-center text-sm text-slate-500">
@@ -79,5 +91,5 @@
   <% end %>
 
   <%# The comparison panel is appended here by create.turbo_stream.erb %>
-  <div id="comparison"></div>
+  <div id="comparison" data-uploads-target="panel"></div>
 </div>

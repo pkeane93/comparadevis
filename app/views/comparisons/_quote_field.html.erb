@@ -1,5 +1,15 @@
 <label data-uploads-target="zone"
        class="relative flex max-w-sm flex-1 basis-64 cursor-pointer flex-col items-center gap-2 rounded-2xl border-2 border-dashed border-slate-700 bg-slate-900/60 px-6 py-10 text-center transition hover:border-violet-500 focus-within:border-violet-500">
+  <%# The file input must come before the remove button in the DOM — a label's
+      implicit control is the first labelable descendant, and a <button> is
+      labelable too, so ordering it first would make the label activate the
+      remove button instead of opening the file picker. %>
+  <input type="file"
+         name="quotes[]"
+         accept="application/pdf"
+         class="sr-only"
+         data-action="uploads#pick">
+
   <button type="button"
           data-uploads-target="remove"
           data-action="click->uploads#remove"
@@ -11,12 +21,6 @@
             stroke-linecap="round" stroke-linejoin="round" />
     </svg>
   </button>
-
-  <input type="file"
-         name="quotes[]"
-         accept="application/pdf"
-         class="sr-only"
-         data-action="uploads#pick">
 
   <svg class="h-11 w-11 text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
     <path d="M12 16V7m0 0L8.5 10.5M12 7l3.5 3.5" stroke-linecap="round" stroke-linejoin="round" />
