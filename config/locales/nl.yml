@@ -30,7 +30,6 @@ nl:
     panel:
       heading: "Vergelijking"
       download: "Downloaden"
-      download_tooltip: "PDF-download binnenkort beschikbaar"
       polling: "De offertes worden gelezen — dit duurt 30 tot 60 seconden."
       failed_generic: "Er ging iets mis bij het vergelijken van deze offertes."
       needs_checking: "controleren"

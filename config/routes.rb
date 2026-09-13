@@ -17,6 +17,8 @@ Rails.application.routes.draw do
   # shareable per language instead of depending on a session.
   scope "(:locale)", locale: /en|fr|nl/ do
     root "comparisons#new"
-    resources :comparisons, only: [ :create, :show ]
+    resources :comparisons, only: [ :create, :show ] do
+      get :pdf, on: :member
+    end
   end
 end

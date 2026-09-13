@@ -30,7 +30,6 @@ fr:
     panel:
       heading: "Comparaison"
       download: "Télécharger"
-      download_tooltip: "Téléchargement PDF bientôt disponible"
       polling: "Lecture des devis — cela prend 30 à 60 secondes."
       failed_generic: "Une erreur est survenue lors de la comparaison de ces devis."
       needs_checking: "à vérifier"

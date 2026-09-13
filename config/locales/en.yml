@@ -30,7 +30,6 @@ en:
     panel:
       heading: "Comparison"
       download: "Download"
-      download_tooltip: "PDF download coming soon"
       polling: "Reading the quotes — this takes 30 to 60 seconds."
       failed_generic: "Something went wrong while comparing these quotes."
       needs_checking: "needs checking"
