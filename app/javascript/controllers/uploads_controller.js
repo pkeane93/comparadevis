@@ -7,7 +7,7 @@ const EMPTY = ["border-dashed", "border-slate-700"]
 // the chosen filename in place of the hint once a file is picked.
 export default class extends Controller {
   static targets = ["zones", "zone", "add", "remove", "title", "hint", "form", "panel", "submit", "reset"]
-  static values = { max: Number, min: Number }
+  static values = { max: Number, min: Number, hint: String, quoteLabel: String }
 
   connect() {
     this.syncAddCard()
@@ -76,18 +76,21 @@ export default class extends Controller {
     }
 
     zone.querySelector("[data-uploads-target~=hint]").textContent =
-      file ? file.name : "PDF — click or drop"
+      file ? file.name : this.hintValue
   }
 
   markEmpty(zone) {
     zone.classList.remove(...FILLED)
     zone.classList.add(...EMPTY)
-    zone.querySelector("[data-uploads-target~=hint]").textContent = "PDF — click or drop"
+    zone.querySelector("[data-uploads-target~=hint]").textContent = this.hintValue
   }
 
+  // quoteLabelValue carries a "%{n}" placeholder from the server-rendered
+  // translation (e.g. "Quote %{n}"), swapped for the real number here.
   renumber() {
     this.zoneTargets.forEach((zone, index) => {
-      zone.querySelector("[data-uploads-target~=title]").textContent = `Quote ${index + 1}`
+      zone.querySelector("[data-uploads-target~=title]").textContent =
+        this.quoteLabelValue.replace("%{n}", index + 1)
     })
   }
 

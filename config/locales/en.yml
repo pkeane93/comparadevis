@@ -1,31 +1,55 @@
-# Files in the config/locales directory are used for internationalization and
-# are automatically loaded by Rails. If you want to use locales other than
-# English, add the necessary files in this directory.
-#
-# To use the locales, use `I18n.t`:
-#
-#     I18n.t "hello"
-#
-# In views, this is aliased to just `t`:
-#
-#     <%= t("hello") %>
-#
-# To use a different locale, set it with `I18n.locale`:
-#
-#     I18n.locale = :es
-#
-# This would use the information in config/locales/es.yml.
-#
-# To learn more about the API, please read the Rails Internationalization guide
-# at https://guides.rubyonrails.org/i18n.html.
-#
-# Be aware that YAML interprets the following case-insensitive strings as
-# booleans: `true`, `false`, `on`, `off`, `yes`, `no`. Therefore, these strings
-# must be quoted to be interpreted as strings. For example:
-#
-#     en:
-#       "yes": yup
-#       enabled: "ON"
-
 en:
-  hello: "Hello world"
+  comparisons:
+    explainer:
+      intro: "Upload contractor quotes for the same job and get a side-by-side comparison, the discrepancies between them, and a reasoned recommendation."
+      audience: "For syndics and co-ownership councils."
+    steps:
+      upload:
+        title: "1. Upload 2-5 PDFs"
+        subtitle: "Quotes for the same job, in French."
+      agent:
+        title: "2. The agent reads them"
+        subtitle: "Takes 30 to 60 seconds."
+      result:
+        title: "3. Comparison appears below"
+        subtitle: "Side-by-side, with discrepancies and a recommendation."
+    description_label: "What is the job? (optional)"
+    description_placeholder: "Replacing the roof on a 1970s apartment block"
+    add_another_quote: "Add another quote"
+    compare: "Compare"
+    reset: "Reset"
+    attempts_left:
+      one: "%{count} attempt left today"
+      other: "%{count} attempts left today"
+    footer:
+      built_by: "Built by"
+    quote_field:
+      quote_title: "Quote %{index}"
+      hint: "PDF — click or drop"
+      remove: "Remove this quote"
+    panel:
+      heading: "Comparison"
+      download: "Download"
+      download_tooltip: "PDF download coming soon"
+      polling: "Reading the quotes — this takes 30 to 60 seconds."
+      failed_generic: "Something went wrong while comparing these quotes."
+      needs_checking: "needs checking"
+      discrepancies: "Discrepancies"
+      recommendation: "Recommendation"
+    errors:
+      min_quotes: "Please upload at least %{count} quotes."
+      max_quotes: "You can compare up to %{count} quotes at a time."
+      pdf_only: "Every file must be a PDF."
+      quote_too_large: "Each file must be under %{size} MB."
+      total_too_large: "The quotes come to more than %{size} MB in total."
+      rate_limited: "You've reached the limit of %{count} comparisons per day from this connection. Try again tomorrow."
+      expired: "This comparison has expired. Upload the quotes again to run a new one."
+    job_errors:
+      missing_api_key: "The server is missing a valid Anthropic API key."
+      too_large: "Those quotes are too large to compare. Try smaller PDFs."
+      too_many_requests: "Too many comparisons at once. Try again in a moment."
+      service_unavailable: "The comparison service is unavailable. Try again shortly."
+      generic_rejected: "The comparison service rejected the request."
+      connection_error: "Could not reach the comparison service. Try again."
+      generic_failure: "Something went wrong while comparing these quotes."
+      incomplete_recommendation: "Recommendation incomplete: the quotes differ in ways the analysis did not account for. Read the discrepancies below before choosing."

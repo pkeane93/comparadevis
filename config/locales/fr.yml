@@ -1,0 +1,55 @@
+fr:
+  comparisons:
+    explainer:
+      intro: "Téléversez des devis d'entrepreneurs pour le même chantier et obtenez une comparaison côte à côte, les écarts entre eux, et une recommandation argumentée."
+      audience: "Pour les syndics et conseils de copropriété."
+    steps:
+      upload:
+        title: "1. Téléversez 2 à 5 PDF"
+        subtitle: "Devis pour le même chantier, en français."
+      agent:
+        title: "2. L'agent les analyse"
+        subtitle: "Prend 30 à 60 secondes."
+      result:
+        title: "3. La comparaison apparaît ci-dessous"
+        subtitle: "Côte à côte, avec les écarts et une recommandation."
+    description_label: "Quel est le chantier ? (optionnel)"
+    description_placeholder: "Remplacement de la toiture d'un immeuble des années 1970"
+    add_another_quote: "Ajouter un autre devis"
+    compare: "Comparer"
+    reset: "Réinitialiser"
+    attempts_left:
+      one: "%{count} essai restant aujourd'hui"
+      other: "%{count} essais restants aujourd'hui"
+    footer:
+      built_by: "Créé par"
+    quote_field:
+      quote_title: "Devis %{index}"
+      hint: "PDF — cliquez ou déposez"
+      remove: "Retirer ce devis"
+    panel:
+      heading: "Comparaison"
+      download: "Télécharger"
+      download_tooltip: "Téléchargement PDF bientôt disponible"
+      polling: "Lecture des devis — cela prend 30 à 60 secondes."
+      failed_generic: "Une erreur est survenue lors de la comparaison de ces devis."
+      needs_checking: "à vérifier"
+      discrepancies: "Écarts"
+      recommendation: "Recommandation"
+    errors:
+      min_quotes: "Veuillez téléverser au moins %{count} devis."
+      max_quotes: "Vous pouvez comparer jusqu'à %{count} devis à la fois."
+      pdf_only: "Chaque fichier doit être un PDF."
+      quote_too_large: "Chaque fichier doit faire moins de %{size} Mo."
+      total_too_large: "Les devis totalisent plus de %{size} Mo."
+      rate_limited: "Vous avez atteint la limite de %{count} comparaisons par jour depuis cette connexion. Réessayez demain."
+      expired: "Cette comparaison a expiré. Téléversez à nouveau les devis pour en lancer une nouvelle."
+    job_errors:
+      missing_api_key: "Le serveur ne dispose pas d'une clé API Anthropic valide."
+      too_large: "Ces devis sont trop volumineux pour être comparés. Essayez des PDF plus légers."
+      too_many_requests: "Trop de comparaisons à la fois. Réessayez dans un instant."
+      service_unavailable: "Le service de comparaison est indisponible. Réessayez bientôt."
+      generic_rejected: "Le service de comparaison a rejeté la demande."
+      connection_error: "Impossible de joindre le service de comparaison. Réessayez."
+      generic_failure: "Une erreur est survenue lors de la comparaison de ces devis."
+      incomplete_recommendation: "Recommandation incomplète : les devis diffèrent sur des points que l'analyse n'a pas pris en compte. Consultez les écarts ci-dessous avant de choisir."
