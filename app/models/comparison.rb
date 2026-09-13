@@ -37,14 +37,14 @@ class Comparison
   # `values` is one entry per quote, in the same order as `quotes`. Each
   # becomes a cell carrying whether it holds a real figure, so the view can
   # mark the rest "needs checking" rather than printing a bare "?".
-  def add_row(line_item:, values:, note: nil)
+  def add_row(line_item:, values:, unit: nil, note: nil)
     # A row must have one cell per quote. If the model returns too few, the
     # missing ones would slide under the wrong column, so pad them out; if it
     # returns too many, drop the extras.
     cells = Array(values).first(quotes.size).map { |value| cell_for(value) }
     cells << cell_for(nil) while cells.size < quotes.size
 
-    rows << { line_item: line_item.to_s.strip, cells: cells, note: note.presence }
+    rows << { line_item: line_item.to_s.strip, unit: unit.to_s.strip.presence, cells: cells, note: note.presence }
   end
 
   def add_discrepancy(description:, severity: :medium)
