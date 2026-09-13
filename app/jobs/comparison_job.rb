@@ -23,9 +23,17 @@ class ComparisonJob < ApplicationJob
     timeline, warranty, and whatever else the quotes have in common. Keep the
     values in the same order the quotes were given to you.
 
+    When quotes state a price on different bases — per half hour versus per
+    hour, monthly versus annual, per unit versus flat — convert every value in
+    the row to one common basis before recording it, and show the original in
+    brackets: "97.50 EUR/hour (48.75 EUR per half hour)". Never place two
+    different units side by side in the same row. Give that common basis as
+    the row's unit.
+
     Call flag_discrepancy for each place the quotes disagree or cannot be
     compared fairly — a missing figure, a different scope of work, a warranty
-    one offers and another does not.
+    one offers and another does not, or a line item the quotes originally
+    stated on different units (flag this even after you have converted them).
 
     Never invent a figure or a line item that is not in one of the quotes. If
     a quote does not state something, pass "not stated" for that value rather
@@ -47,6 +55,10 @@ class ComparisonJob < ApplicationJob
     address every discrepancy listed. If the discrepancies mean the quotes
     cannot be fairly compared, say that instead of picking one.
 
+    The table's values are already converted to a common unit per row — that
+    unit is given alongside each row. Compare figures only within the same
+    row's unit; never compare two values that are on different bases.
+
     Never introduce a figure that is not in the table you were given.
   PROMPT
 
@@ -58,6 +70,12 @@ class ComparisonJob < ApplicationJob
         type: "object",
         properties: {
           line_item: { type: "string", description: "What is being compared, e.g. 'Price incl. tax'." },
+          unit: {
+            type: "string",
+            description: "The single common basis every value in this row is expressed in, " \
+                          "e.g. 'EUR/hour', 'EUR incl. VAT', 'days'. Convert values onto this " \
+                          "one basis before recording them — never mix units within a row."
+          },
           values: {
             type: "array",
             items: { type: "string" },
@@ -65,7 +83,7 @@ class ComparisonJob < ApplicationJob
           },
           note: { type: "string", description: "Optional caveat about this row." }
         },
-        required: [ "line_item", "values" ]
+        required: [ "line_item", "unit", "values" ]
       }
     },
     {
@@ -150,6 +168,7 @@ class ComparisonJob < ApplicationJob
       when "add_comparison_row"
         comparison.add_row(
           line_item: input[:line_item],
+          unit: input[:unit],
           values: input[:values],
           note: input[:note]
         )
@@ -183,7 +202,8 @@ class ComparisonJob < ApplicationJob
     def summary_of(comparison, description)
       table = comparison.rows.map do |row|
         values = row[:cells].map { |cell| cell[:verified] ? cell[:value] : "not stated" }
-        "#{row[:line_item]}: #{values.join(' | ')}"
+        unit = " (#{row[:unit]})" if row[:unit].present?
+        "#{row[:line_item]}#{unit}: #{values.join(' | ')}"
       end
 
       issues = comparison.discrepancies.map { |d| "- (#{d[:severity]}) #{d[:description]}" }
