@@ -9,7 +9,7 @@ class ComparisonsController < ApplicationController
   MAX_TOTAL_SIZE = 20.megabytes
 
   # `create` re-renders the form on a validation error, so it needs this too.
-  before_action :set_max_quotes, only: %i[new create]
+  before_action :set_max_quotes, :set_min_quotes, only: %i[new create]
 
   # Every comparison run costs Anthropic credits. Capped per IP instead of
   # gated behind a password, so anyone can try the demo — just not spam it.
@@ -50,6 +50,10 @@ class ComparisonsController < ApplicationController
   private
     def set_max_quotes
       @max_quotes = MAX_QUOTES
+    end
+
+    def set_min_quotes
+      @min_quotes = MIN_QUOTES
     end
 
     def rate_limited

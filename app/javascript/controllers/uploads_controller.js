@@ -3,14 +3,15 @@ import { Controller } from "@hotwired/stimulus"
 const FILLED = ["border-solid", "border-cyan-400"]
 const EMPTY = ["border-dashed", "border-slate-700"]
 
-// Adds upload zones up to a maximum, and shows the chosen filename in place
-// of the hint once a file is picked.
+// Adds and removes upload zones between a minimum and a maximum, and shows
+// the chosen filename in place of the hint once a file is picked.
 export default class extends Controller {
-  static targets = ["zones", "zone", "add", "title", "hint"]
-  static values = { max: Number }
+  static targets = ["zones", "zone", "add", "remove", "title", "hint"]
+  static values = { max: Number, min: Number }
 
   connect() {
-    this.syncAddButton()
+    this.syncAddCard()
+    this.syncRemoveButtons()
   }
 
   add() {
@@ -20,9 +21,24 @@ export default class extends Controller {
     blank.querySelector("input[type=file]").value = ""
     this.markEmpty(blank)
 
-    this.zonesTarget.appendChild(blank)
+    this.zonesTarget.insertBefore(blank, this.addTarget)
     this.renumber()
-    this.syncAddButton()
+    this.syncAddCard()
+    this.syncRemoveButtons()
+  }
+
+  // The remove button sits inside the zone's <label>, so its click must be
+  // stopped here or it bubbles to the label and opens the file picker.
+  remove(event) {
+    event.preventDefault()
+    event.stopPropagation()
+
+    if (this.zoneTargets.length <= this.minValue) return
+
+    event.target.closest("[data-uploads-target~=zone]").remove()
+    this.renumber()
+    this.syncAddCard()
+    this.syncRemoveButtons()
   }
 
   pick(event) {
@@ -52,7 +68,12 @@ export default class extends Controller {
     })
   }
 
-  syncAddButton() {
+  syncAddCard() {
     this.addTarget.hidden = this.zoneTargets.length >= this.maxValue
+  }
+
+  syncRemoveButtons() {
+    const show = this.zoneTargets.length > this.minValue
+    this.removeTargets.forEach((button) => { button.hidden = !show })
   }
 }

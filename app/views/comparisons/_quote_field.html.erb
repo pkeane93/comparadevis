@@ -1,5 +1,17 @@
 <label data-uploads-target="zone"
-       class="flex max-w-sm flex-1 basis-64 cursor-pointer flex-col items-center gap-2 rounded-2xl border-2 border-dashed border-slate-700 bg-slate-900/60 px-6 py-10 text-center transition hover:border-violet-500 focus-within:border-violet-500">
+       class="relative flex max-w-sm flex-1 basis-64 cursor-pointer flex-col items-center gap-2 rounded-2xl border-2 border-dashed border-slate-700 bg-slate-900/60 px-6 py-10 text-center transition hover:border-violet-500 focus-within:border-violet-500">
+  <button type="button"
+          data-uploads-target="remove"
+          data-action="click->uploads#remove"
+          hidden
+          class="absolute right-3 top-3 rounded-full p-1.5 text-slate-500 transition hover:bg-slate-800 hover:text-rose-400"
+          aria-label="Remove this quote">
+    <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+      <path d="M4 7h16M9 7V4.5A1.5 1.5 0 0 1 10.5 3h3A1.5 1.5 0 0 1 15 4.5V7m2 0-.8 12.2A2 2 0 0 1 14.2 21H9.8a2 2 0 0 1-2-1.8L7 7"
+            stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+  </button>
+
   <input type="file"
          name="quotes[]"
          accept="application/pdf"
