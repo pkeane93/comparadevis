@@ -26,6 +26,7 @@ class ComparisonPdf
         draw_table(pdf)
         draw_discrepancies(pdf) if comparison.discrepancies?
         draw_recommendation(pdf) if comparison.recommendation.present?
+        draw_footer(pdf)
       end
     end
 
@@ -84,6 +85,25 @@ class ComparisonPdf
       pdf.text safe(I18n.t("comparisons.panel.recommendation")), size: 14, style: :bold
       pdf.move_down 6
       pdf.text safe(comparison.recommendation), size: 10
+    end
+
+    # Mirrors the web footer's "Built by Cathan Studio" credit, stamped on
+    # every page via pdf.canvas so it sits at a fixed spot on the full page
+    # regardless of how the content above fills each page.
+    def draw_footer(pdf)
+      pdf.repeat(:all) do
+        pdf.canvas do
+          pdf.formatted_text_box(
+            [
+              { text: safe("#{I18n.t('comparisons.footer.built_by')} "), size: 8, color: "999999" },
+              { text: "Cathan Studio", size: 8, color: "999999", link: "https://cathan-studio.sliplane.app/" }
+            ],
+            at: [ 0, 20 ],
+            width: pdf.bounds.width,
+            align: :center
+          )
+        end
+      end
     end
 
     # Prawn's built-in fonts only support Windows-1252, but the model's prose
