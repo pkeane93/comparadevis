@@ -30,7 +30,19 @@ nl:
     panel:
       heading: "Vergelijking"
       download: "Downloaden"
-      polling: "De offertes worden gelezen — dit duurt 30 tot 60 seconden."
+      phases:
+        reading_quotes: "De offertes worden gelezen…"
+        comparing: "Posten worden vergeleken…"
+        writing_recommendation: "Het advies wordt geschreven…"
+      tally: "%{rows}, %{discrepancies} tot nu toe"
+      tally_rows:
+        zero: "nog geen posten"
+        one: "%{count} post"
+        other: "%{count} posten"
+      tally_discrepancies:
+        zero: "geen verschillen"
+        one: "%{count} verschil"
+        other: "%{count} verschillen"
       failed_generic: "Er ging iets mis bij het vergelijken van deze offertes."
       needs_checking: "controleren"
       discrepancies: "Verschillen"

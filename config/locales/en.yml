@@ -30,7 +30,19 @@ en:
     panel:
       heading: "Comparison"
       download: "Download"
-      polling: "Reading the quotes — this takes 30 to 60 seconds."
+      phases:
+        reading_quotes: "Reading the quotes…"
+        comparing: "Comparing line items…"
+        writing_recommendation: "Writing the recommendation…"
+      tally: "%{rows}, %{discrepancies} so far"
+      tally_rows:
+        zero: "no line items yet"
+        one: "%{count} line item"
+        other: "%{count} line items"
+      tally_discrepancies:
+        zero: "no discrepancies"
+        one: "%{count} discrepancy"
+        other: "%{count} discrepancies"
       failed_generic: "Something went wrong while comparing these quotes."
       needs_checking: "needs checking"
       discrepancies: "Discrepancies"

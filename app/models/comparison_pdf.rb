@@ -18,8 +18,8 @@ class ComparisonPdf
     attr_reader :comparison
 
     def document
-      @document ||= Prawn::Document.new(page_layout: :landscape).tap do |pdf|
-        pdf.text "Comparadevis", size: 20, style: :bold
+      @document ||= Prawn::Document.new(page_size: "A4", page_layout: :landscape).tap do |pdf|
+        draw_wordmark(pdf)
         pdf.text safe(I18n.t("comparisons.panel.heading")), size: 12, color: "666666"
         pdf.move_down 16
 
@@ -27,6 +27,26 @@ class ComparisonPdf
         draw_discrepancies(pdf) if comparison.discrepancies?
         draw_recommendation(pdf) if comparison.recommendation.present?
       end
+    end
+
+    # A small text wordmark — a diamond glyph next to bold "Comparadevis" —
+    # matching the app header's rotated-square-plus-text treatment. No image
+    # asset needed, so it stays crisp at any size.
+    def draw_wordmark(pdf)
+      mark = 14
+      top = pdf.cursor
+      left = pdf.bounds.left
+      cx = left + mark / 2.0
+      cy = top - mark / 2.0
+      half = mark / 2.0
+
+      pdf.stroke_color "22D3EE"
+      pdf.line_width 1.5
+      pdf.stroke_polygon [ cx, cy + half ], [ cx + half, cy ], [ cx, cy - half ], [ cx - half, cy ]
+      pdf.stroke_color "000000"
+
+      pdf.draw_text "Comparadevis", at: [ left + mark + 8, top - 15 ], size: 20, style: :bold
+      pdf.move_down mark + 6
     end
 
     def draw_table(pdf)

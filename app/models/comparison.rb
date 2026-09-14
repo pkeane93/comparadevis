@@ -5,9 +5,14 @@ class Comparison
   STATUSES = %i[pending running done failed].freeze
   SEVERITIES = %i[low medium high].freeze
 
+  # The stages the job passes through while status is :running, in order.
+  # The panel uses this to show what the agent is doing instead of a fixed
+  # spinner message.
+  PHASES = %i[reading_quotes comparing writing_recommendation].freeze
+
   EXPIRY = 1.hour
 
-  attr_reader :quotes, :rows, :discrepancies, :status
+  attr_reader :quotes, :rows, :discrepancies, :status, :phase
   attr_accessor :recommendation, :error
 
   # Comparisons live in the process cache, not a database. They expire, and
@@ -31,6 +36,7 @@ class Comparison
     @rows = []
     @discrepancies = []
     @status = :pending
+    @phase = :reading_quotes
   end
 
   # One row of the table: a line item compared across the quotes.
@@ -68,6 +74,14 @@ class Comparison
     end
 
     @status = value.to_sym
+  end
+
+  def phase=(value)
+    unless PHASES.include?(value.to_sym)
+      raise ArgumentError, "unknown phase #{value.inspect}"
+    end
+
+    @phase = value.to_sym
   end
 
   def done?
