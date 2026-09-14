@@ -30,7 +30,19 @@ fr:
     panel:
       heading: "Comparaison"
       download: "Télécharger"
-      polling: "Lecture des devis — cela prend 30 à 60 secondes."
+      phases:
+        reading_quotes: "Lecture des devis…"
+        comparing: "Comparaison des postes…"
+        writing_recommendation: "Rédaction de la recommandation…"
+      tally: "%{rows}, %{discrepancies} pour l'instant"
+      tally_rows:
+        zero: "aucun poste pour l'instant"
+        one: "%{count} poste"
+        other: "%{count} postes"
+      tally_discrepancies:
+        zero: "aucun écart"
+        one: "%{count} écart"
+        other: "%{count} écarts"
       failed_generic: "Une erreur est survenue lors de la comparaison de ces devis."
       needs_checking: "à vérifier"
       discrepancies: "Écarts"

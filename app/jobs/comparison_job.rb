@@ -59,9 +59,11 @@ class ComparisonJob < ApplicationJob
     comparison = Comparison.find(id)
     return if comparison.nil?
 
-    update(id, comparison) { |c| c.status = :running }
+    update(id, comparison) { |c| c.status = :running; c.phase = :reading_quotes }
 
-    extract(comparison, description, locale)
+    extract(id, comparison, description, locale)
+
+    update(id, comparison) { |c| c.phase = :writing_recommendation }
     comparison.recommendation = recommend(comparison, description, locale)
     apply_guardrails(comparison, locale)
 
@@ -131,7 +133,7 @@ class ComparisonJob < ApplicationJob
 
     # The loop. Keeps going while the model wants to call tools, capped so a
     # confused model cannot spend forever.
-    def extract(comparison, description, locale)
+    def extract(id, comparison, description, locale)
       messages = [ { role: "user", content: documents_and_instructions(comparison, description) } ]
 
       MAX_TURNS.times do
@@ -152,6 +154,11 @@ class ComparisonJob < ApplicationJob
         # Every result goes back in ONE user message — splitting them teaches
         # the model to stop making parallel calls.
         messages << { role: "user", content: calls.map { |call| run_tool(call, comparison) } }
+
+        # Rows and discrepancies now sit on `comparison` — write them back so
+        # the polling panel sees this turn's progress instead of the last one.
+        comparison.phase = :comparing
+        Comparison.store(comparison, id: id)
       end
     end
 

@@ -1,0 +1,14 @@
+<h3 class="mt-8 text-lg font-semibold">
+  <%= t("comparisons.panel.discrepancies") %>
+  <span class="ml-2 rounded-full bg-cyan-400/15 px-3 py-1 text-sm text-cyan-300">
+    <%= comparison.discrepancies.size %>
+  </span>
+</h3>
+<ul class="mt-3 space-y-2">
+  <% comparison.discrepancies.each do |discrepancy| %>
+    <li class="flex gap-3">
+      <span class="mt-1 h-2 w-2 shrink-0 rounded-full <%= discrepancy[:severity] == :high ? "bg-rose-400" : "bg-slate-500" %>"></span>
+      <%= discrepancy[:description] %>
+    </li>
+  <% end %>
+</ul>
