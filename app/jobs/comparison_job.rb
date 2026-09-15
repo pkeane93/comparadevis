@@ -7,7 +7,10 @@
 class ComparisonJob < ApplicationJob
   queue_as :default
 
-  EXTRACTION_MODEL = :"claude-haiku-4-5"
+  # Pinned to a dated snapshot so an Anthropic-side alias update can't change
+  # behavior here silently. claude-sonnet-5 has no dated snapshot to pin to
+  # yet (it's currently the only ID for that model) — revisit once one exists.
+  EXTRACTION_MODEL = :"claude-haiku-4-5-20251001"
   RECOMMENDATION_MODEL = :"claude-sonnet-5"
 
   MAX_TOKENS = 8_000
