@@ -147,6 +147,7 @@ class ComparisonJob < ApplicationJob
           tools: TOOLS,
           messages: messages
         )
+        comparison.record_usage(response)
 
         break unless response.stop_reason == :tool_use
 
@@ -214,6 +215,7 @@ class ComparisonJob < ApplicationJob
         system_: recommendation_prompt(locale),
         messages: [ { role: "user", content: summary_of(comparison, description) } ]
       )
+      comparison.record_usage(response)
 
       text_of(response)
     end
