@@ -43,6 +43,7 @@ en:
         zero: "no discrepancies"
         one: "%{count} discrepancy"
         other: "%{count} discrepancies"
+      usage: "%{count} tokens used"
       failed_generic: "Something went wrong while comparing these quotes."
       needs_checking: "needs checking"
       discrepancies: "Discrepancies"

@@ -12,7 +12,7 @@ class Comparison
 
   EXPIRY = 1.hour
 
-  attr_reader :quotes, :rows, :discrepancies, :status, :phase
+  attr_reader :quotes, :rows, :discrepancies, :status, :phase, :input_tokens, :output_tokens
   attr_accessor :recommendation, :error
 
   # Comparisons live in the process cache, not a database. They expire, and
@@ -37,6 +37,19 @@ class Comparison
     @discrepancies = []
     @status = :pending
     @phase = :reading_quotes
+    @input_tokens = 0
+    @output_tokens = 0
+  end
+
+  # Called after every Anthropic API call the job makes for this comparison,
+  # so the panel can show a running total while the job is still working.
+  def record_usage(response)
+    @input_tokens += response.usage.input_tokens
+    @output_tokens += response.usage.output_tokens
+  end
+
+  def total_tokens
+    input_tokens + output_tokens
   end
 
   # One row of the table: a line item compared across the quotes.

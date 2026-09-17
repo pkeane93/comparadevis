@@ -43,6 +43,7 @@ nl:
         zero: "geen verschillen"
         one: "%{count} verschil"
         other: "%{count} verschillen"
+      usage: "%{count} tokens gebruikt"
       failed_generic: "Er ging iets mis bij het vergelijken van deze offertes."
       needs_checking: "controleren"
       discrepancies: "Verschillen"
