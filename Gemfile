@@ -64,7 +64,7 @@ gem "tailwindcss-rails", "~> 4.6"
 # every JSON decode raises ArgumentError - including session cookies.
 gem "json", "~> 2.21"
 
-gem "anthropic", "~> 1.70"
+gem "anthropic", "~> 1.71"
 
 gem "dotenv-rails", "~> 3.2", groups: [ :development, :test ]
 
