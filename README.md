@@ -1,5 +1,7 @@
 # Comparadevis
 
+**Live demo:** https://comparadevis.sliplane.app/
+
 Upload 2-5 contractor quotes (French PDFs) for the same job and get a
 side-by-side comparison: a table of line items, the discrepancies between
 the quotes, and a reasoned recommendation. Built for syndics and
@@ -8,6 +10,10 @@ co-ownership councils.
 An agent (Claude) reads the PDFs, records line items and discrepancies
 through tool calls, then writes the recommendation once the comparison is
 complete.
+
+## Case study
+
+Syndics and co-ownership councils often have to compare several contractor quotes (devis) for the same job, but the quotes arrive as French PDFs that each lay out their prices differently, so comparing them by hand is slow and easy to get wrong. Comparadevis has Claude read the PDFs and record each line item and each disagreement between quotes through tool calls, and it only writes the recommendation once that comparison is complete. A small, fast model (Haiku) does the reading and extraction, and a stronger one (Sonnet) writes the recommendation from the finished table. The hardest part was that quotes often price the same thing on different bases, such as per half hour versus per hour, or monthly versus annual, so a naive table put figures side by side that could not fairly be compared. The fix was to make the agent convert every value in a row to one common unit, show the original in brackets, and flag the mismatch as a discrepancy. The other awkward constraint is that the app has no database: progress lives in the server's memory cache and the page checks it every 2 seconds, which only works if the app runs as a single container with a single web worker.
 
 ## Stack
 
