@@ -57,7 +57,7 @@ group :test do
   gem "selenium-webdriver"
 end
 
-gem "tailwindcss-rails", "~> 4.6"
+gem "tailwindcss-rails", "~> 4.7"
 
 # json 3.x dropped the second positional argument to JSON.parse, which
 # activesupport 8.1 still passes (active_support/json/decoding.rb). With 3.x
